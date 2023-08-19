@@ -67,5 +67,11 @@ Bradley Efron, Trevor Hastie, Iain Johnstone and Robert Tibshirani (2004) "Least
 
 - [ ] Install Terraform ([info here](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli))
 - [ ] Configure AWS cli credentials
+- [ ] Configure environment variables for Prefect Cloud Account https://docs.prefect.io/2.11.4/cloud/users/api-keys/
 
+  ```
+  export TF_VAR_PREFECT_API_URL="https://api.prefect.cloud/api/accounts/[ACCOUNT-ID]/workspaces/[WORKSPACE-ID]"
+
+  export TF_VAR_PREFECT_API_KEY="[API-KEY]"
+  ```
 

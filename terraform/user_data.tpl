@@ -25,12 +25,9 @@ pipenv install --ignore-pipfile
 # Launch MLflow server (adjust parameters as needed)
 # nohup mlflow server --host 0.0.0.0 --port 5000 &
 
-# Connect to Prefect Cloud or start Prefect local agent (adjust as needed)
-# prefect agent local start
-# $ prefect config set PREFECT_API_URL="https://api.prefect.cloud/api/accounts/[ACCOUNT-ID]/workspaces/[WORKSPACE-ID]"
-# $ prefect config set PREFECT_API_KEY="[API-KEY]"
-
-
+# Prefect Cloud Settings
+prefect config set PREFECT_API_URL="${PREFECT_API_URL}"
+prefect config set PREFECT_API_KEY="${PREFECT_API_KEY}"
 
 
 # Execute your pipeline script

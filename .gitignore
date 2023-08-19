@@ -1,3 +1,6 @@
 mlruns/
 terraform/.terraform/
 terraform/.terraform.lock.hcl
+terraform/ops_private_key.pem
+terraform/terraform.tfstate
+terraform/terraform.tfstate.backup
