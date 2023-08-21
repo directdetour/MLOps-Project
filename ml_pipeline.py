@@ -47,10 +47,12 @@ def evaluate_model(model, X_test, y_test):
 
 #Use MLflow to track your experiment and log model parameters and metrics.
 @task
-def log_metrics_to_mlflow(mse, r2score):
+def log_metrics_to_mlflow(mse, r2score, model):
     with mlflow.start_run() as run:
         mlflow.log_metric("mse", mse)
         mlflow.log_metric("r2score", r2score)
+        model_path = "linear_regression_model"
+        mlflow.sklearn.log_model(model, artifact_path=model_path)
 
 
 # Define and assemble the Prefect Flow using the tasks
@@ -61,7 +63,7 @@ def run_flow():
     X_train, X_test, y_train, y_test = split_data(data, target)
     model = train_model(X_train, y_train)
     mse, r2_score = evaluate_model(model, X_test, y_test)
-    log_metrics_to_mlflow(mse, r2_score)
+    log_metrics_to_mlflow(mse, r2_score, model)
 
 if __name__ == '__main__':
     run_flow()
