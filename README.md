@@ -28,7 +28,7 @@ Before proceeding, ensure you have the following prerequisites set up:
 
 #### Launch Terraformed VM
  1. Clone this repository & navigate to terraform directory
-``` 
+```bash 
 # Clone the GitHub repository
 git clone https://github.com/directdetour/MLOps-Project.git
 cd MLOps-Project/terraform
@@ -36,46 +36,74 @@ cd MLOps-Project/terraform
 
 2. initialize and execute terraform configurations. (This will create an EC2 VM and checkout this repository on the newly created VM, then connect via SSH) 
 
-```
+```bash
 terraform init
 terraform plan
 ./apply_and_ssh.sh
 ```
 
 - If the VM is already launched, I've added a helper script to SSH to the VM based on terraform outputs.
-```
+```bash
 ./vm_ssh.sh
 ```
 
 #### Using the active VM connected via SSH:
-- (may need to wait for the VM to completely initialize)
-  ```
+**Important Note:** You may need to wait for the VM to completely initialize (2-3 minutes possibly)
+  ```bash
   # check logs to see initialization status
   sudo cat /var/log/cloud-init-output.log 
   ```
 
 1. Navigate to project 
   
-```
-cd MLOps-Project
-```
+  ```bash
+  cd MLOps-Project
+  ```
 
 2. Configure prefect environment variables (execute helper script and provide your configurations for [Prefect cloud account](#prefect-cloud-account))
 
-```
-source ./prefect_settings.sh
-```
+  ```bash
+  source ./prefect_settings.sh
+  ```
 
 3. Model Training: Execute model training pipeline script
 
-```
-./model_train_pipeline.sh
-```
+  ```bash
+  ./model_train_pipeline.sh
+  ```
 
-4. Access Mlflow UI:
-  - Open a web browser and navigate to: http://public-ip-of-ec2:5000 (ip address and link will be output by ssh scripts)  
-  - You should now be able to view and monitor the logged metrics and model details.
+4. **Access Mlflow UI**:
+   - Open a web browser and navigate to: `http://public-ip-of-ec2:5000` (replace with the actual IP address and link provided by the SSH scripts).
+   - You should now be able to view and monitor the logged metrics and model details.
+   
+   ![MLFlow Experiments](assets/experiment_info.jpg)
+   ![MLFlow Experiment Details](assets/experiment_details.jpg)
+   ![MLFlow Registered Model](assets/registered_model.jpg)
 
+5. **Access Prefect Cloud**:
+   - Log in to [https://app.prefect.cloud/](https://app.prefect.cloud/) and view the orchestration results.
+   
+   ![Prefect Flows](assets/prefect_flows.jpg)
+
+
+
+## Cleanup Instructions
+**Important Note:** Failure to properly destroy or turn off your EC2 VM can result in unexpected charges to your AWS account.
+
+Follow these steps to clean up the resources:
+
+1. **Disconnect from Virtual Machine SSH Session**: Ensure you've exited the SSH session connected to your EC2 VM.
+
+2. **Destroy Resources using Terraform**:
+   - Navigate to the `terraform` directory within your project.
+   - Execute the following command to initiate the resource destruction process:
+     ```bash
+     cd MLOps-Project/terraform
+     terraform destroy
+     ```
+   - Confirm the destruction when prompted by typing `yes`.
+
+By following these steps, you will ensure that all resources created during the project are properly removed, preventing any potential ongoing charges or unnecessary resource consumption in your AWS account.
 
 ---
 
