@@ -35,6 +35,15 @@ resource "aws_security_group_rule" "allow_git_clone" {
   security_group_id = aws_security_group.instance_security_group.id
 }
 
+resource "aws_security_group_rule" "allow_mlflow" {
+  type        = "ingress"
+  from_port   = 5000
+  to_port     = 5000
+  protocol    = "tcp"
+  cidr_blocks = ["0.0.0.0/0"]  # Adjust this to restrict the IP range if needed
+  security_group_id = aws_security_group.instance_security_group.id
+}
+
 resource "aws_security_group_rule" "allow_all_outbound" {
   type        = "egress"
   from_port   = 0
@@ -42,14 +51,6 @@ resource "aws_security_group_rule" "allow_all_outbound" {
   protocol    = "-1"
   cidr_blocks = ["0.0.0.0/0"]
   security_group_id = aws_security_group.instance_security_group.id
-}
-
-data "template_file" "user_data" {
-  template = file("user_data.tpl")
-  vars = {
-    PREFECT_API_URL = var.PREFECT_API_URL
-    PREFECT_API_KEY = var.PREFECT_API_KEY
-  }
 }
 
 resource "aws_instance" "new_instance" {
@@ -61,5 +62,5 @@ resource "aws_instance" "new_instance" {
 
   tags = { Name = "mlops-zoomcamp-terraformed" }
 
-  user_data = data.template_file.user_data.rendered
+  user_data = file("cloud_init.yaml")
 }

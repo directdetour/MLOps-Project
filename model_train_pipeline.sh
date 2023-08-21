@@ -1,6 +1,7 @@
 #!/bin/bash
 
-docker run --restart always -itd --name mlflow -p 5000:5000 -v ~/mlflow:/mlflow ghcr.io/mlflow/mlflow mlflow server -h 0.0.0.0
+#launch MLFlow docker container
+docker start mlflow 2>/dev/null || docker run --restart always -itd --name mlflow -p 5000:5000 -v ~/mlflow:/mlflow ghcr.io/mlflow/mlflow mlflow server -h 0.0.0.0
 
 # Install pipenv and create a virtual environment
 sudo -H pip3 install -U pipenv

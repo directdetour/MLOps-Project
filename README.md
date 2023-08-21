@@ -1,15 +1,3 @@
-## Kaggle
-Visit kaggle.com and get api credentials save this to `./.kaggle/kaggle.json`
-
-[Details - Visit kaggle docs](https://github.com/Kaggle/kaggle-api#api-credentials)
-
-
-API command
-```
-/// kaggle datasets download -d adarshsng/lending-club-loan-data-csv -p data/
-
- -p data/
-```
 
 
 
@@ -67,11 +55,64 @@ Bradley Efron, Trevor Hastie, Iain Johnstone and Robert Tibshirani (2004) "Least
 
 - [ ] Install Terraform ([info here](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli))
 - [ ] Configure AWS cli credentials
-- [ ] Configure environment variables for Prefect Cloud Account https://docs.prefect.io/2.11.4/cloud/users/api-keys/
 
-  ```
-  export TF_VAR_PREFECT_API_URL="https://api.prefect.cloud/api/accounts/[ACCOUNT-ID]/workspaces/[WORKSPACE-ID]"
+## Launch steps
 
-  export TF_VAR_PREFECT_API_KEY="[API-KEY]"
-  ```
+#### Launch Terraformed VM
+ 1. Clone this repository & navigate to terraform directory
+``` 
+# Clone the GitHub repository
+git clone https://github.com/directdetour/MLOps-Project.git
+cd MLOps-Project/terraform
+```
 
+2. initialize and execute terraform configurations. (This will create an EC2 VM and checkout this repository on the newly created VM, then connect via SSH) ```
+```
+terraform init
+terraform plan
+./apply_and_ssh.sh
+```
+
+#### From SSH connected VM:
+1. Navigate to project (may need to wait for the VM to completely initialize)
+
+```
+cd MLOps-Project
+```
+
+2. Configure prefect environment variables (execute helper script and provide your configurations for [Prefect cloud account](#prefect-cloud-account))
+
+```
+./prefect_settings.sh
+```
+
+3. Model Training: Execute model training pipeline script
+
+```
+./model_train_pipeline.sh
+```
+
+
+
+
+
+
+
+
+
+# Prefect cloud account
+Configure environment variables for Prefect Cloud Account https://docs.prefect.io/2.11.4/cloud/users/api-keys/
+- Use helper script
+
+```
+./prefect_settings.sh
+```
+
+- -OR- Set Environment Variables Manually 
+
+```
+  export PREFECT_API_URL="https://api.prefect.cloud/api/accounts/[ACCOUNT-ID]/workspaces/[WORKSPACE-ID]"
+
+  export PREFECT_API_KEY="[API-KEY]"
+```
+  
